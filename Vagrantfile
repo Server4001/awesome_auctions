@@ -2,7 +2,8 @@
 # vi: set ft=ruby :
 Vagrant.configure('2') do |config|
   config.vm.box      = 'ubuntu/trusty32'
-  config.vm.hostname = 'rails-dev-box'
+  config.vm.network :private_network, ip: "192.168.35.27"
+  #config.vm.hostname = 'rails-dev-box'
 
   config.vm.network :forwarded_port, guest: 3000, host: 3000
 

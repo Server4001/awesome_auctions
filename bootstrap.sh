@@ -49,3 +49,6 @@ install 'ExecJS runtime' nodejs
 update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 echo 'all set, rock on!'
+
+# To serve the app, use: bin/rails server -b 0.0.0.0
+# Then go to: http://192.168.35.27:3000/

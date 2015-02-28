@@ -1,2 +1,9 @@
 .vagrant
 rails
+.idea/
+
+# Ignore bundler config.
+curry-nation/.bundle
+
+# Ignore all logfiles and tempfiles.
+curry-nation/config/secrets.yml
