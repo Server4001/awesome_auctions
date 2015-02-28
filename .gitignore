@@ -3,7 +3,10 @@ rails
 .idea/
 
 # Ignore bundler config.
-curry-nation/.bundle
+awesome_auctions/.bundle
 
 # Ignore all logfiles and tempfiles.
-curry-nation/config/secrets.yml
+awesome_auctions/config/secrets.yml
+
+# Secret keys
+awesome_auctions/config/secrets.yml
