@@ -1,7 +1,8 @@
-%h1 Editing product
-
-= render 'form'
-
-= link_to 'Show', @product
-\|
-= link_to 'Back', products_path
+.row
+  %h1.text-center Editing product
+.row
+  = render 'form'
+.row
+  .btn-group{role: "group"}
+    = link_to 'Show', @product, class: "btn btn-primary btn-sm"
+    = link_to 'Back', products_path, class: "btn btn-primary btn-sm"

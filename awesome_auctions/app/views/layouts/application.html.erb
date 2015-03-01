@@ -10,8 +10,8 @@
 
 <%= render "nav" %>
 <div class="container">
-  <%= content_tag :div, alert, class: "flash bg-danger" if alert %>
-  <%= content_tag :div, notice, class: "flash bg-success" if notice %>
+  <%= content_tag :div, content_tag(:button, content_tag(:span, "×", "aria-hidden": "true"), type: "button", class: "close", "data-dismiss": "alert", "aria-label": "Close") + content_tag(:strong, "Uh Oh! ") + alert, class: "alert alert-danger alert-dismissible fade in", role: "alert" if alert %>
+  <%= content_tag :div, content_tag(:button, content_tag(:span, "×", "aria-hidden": "true"), type: "button", class: "close", "data-dismiss": "alert", "aria-label": "Close") + content_tag(:strong, "Success! ") + notice, class: "alert alert-success alert-dismissible fade in", role: "alert" if notice %>
   <%= yield %>
 </div>
 

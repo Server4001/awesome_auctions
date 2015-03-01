@@ -1,5 +1,5 @@
-%h1 Listing products
-
+.row
+  %h1.text-center Listing products
 .row
   %ul.list-unstyled
     - @products.each do |product|
@@ -8,11 +8,10 @@
         %p
           =link_to product do
             =image_tag product.image, height: 200
-        %p
-          = link_to 'Edit', edit_product_path(product)
-          |
-          = link_to 'Destroy', product, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        .btn-group{role: "group"}
+          = link_to 'Edit', edit_product_path(product), class: "btn btn-primary btn-sm"
+          = link_to 'Destroy', product, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "btn btn-primary btn-sm"
 
-.row
+.row{style: "margin-top: 25px;"}
   %p
     = link_to 'New Product', new_product_path, class: 'btn btn-primary'

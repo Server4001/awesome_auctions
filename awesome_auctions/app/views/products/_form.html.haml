@@ -1,16 +1,23 @@
-= form_for @product do |f|
+.row
   - if @product.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@product.errors.count, "error")} prohibited this product from being saved:"
-      %ul
-        - @product.errors.full_messages.each do |msg|
-          %li= msg
-
-  .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :image
-    = f.text_field :image
-  .actions
-    = f.submit 'Save'
+    .col-lg-6.col-lg-offset-3.col-md-6.col-md-offset-3.col-sm-12
+      .panel.panel-danger
+        .panel-heading
+          = "#{pluralize(@product.errors.count, "error")} exist on this form"
+        .panel-body
+          %ul
+            - @product.errors.full_messages.each do |msg|
+              %li= msg
+.row
+  = form_for @product, html: {class: "form-horizontal new_product"} do |f|
+    .form-group
+      = f.label :name, nil, class: "col-sm-2 control-label"
+      .col-sm-4.input-group
+        = f.text_field :name, class: "form-control"
+    .form-group
+      = f.label :image, "Image URL", class: "col-sm-2 control-label"
+      .col-sm-4.input-group
+        = f.text_field :image, class: "form-control"
+    .form-group
+      .col-sm-offset-2.col-sm-10
+        = f.submit 'Save', class: "btn btn-primary"
