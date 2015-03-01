@@ -10,3 +10,4 @@ awesome_auctions/config/secrets.yml
 
 # Secret keys
 awesome_auctions/config/secrets.yml
+awesome_auctions/config/initializers/devise.rb
