@@ -10,6 +10,8 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
+    @auction = @product.auction
+    @top_bid = (@auction.nil? ? nil : @auction.current_bid_value)
   end
 
   # GET /products/new

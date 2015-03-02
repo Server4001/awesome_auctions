@@ -1,12 +1,13 @@
-.row
-  %h2.text-center Put this product to auction
-.row
-  =form_for [@product, Auction.new], html: {class: "form-horizontal new_auction"} do |f|
-    .form-group
-      =f.label :value, nil, class: "col-sm-2 control-label"
-      .col-sm-6.input-group
-        %span.input-group-addon $
-        =f.text_field :value, class: "form-control"
-    .form-group
-      .col-sm-offset-2.col-sm-10
-        =f.button nil, class: "btn btn-primary"
+-unless @product.has_auction?
+  .row
+    %h2.text-center Put this product to auction
+  .row
+    =form_for [@product, Auction.new], html: {class: "form-horizontal new_auction"} do |f|
+      .form-group
+        =f.label :value, nil, class: "col-sm-2 control-label"
+        .col-sm-6.input-group
+          %span.input-group-addon $
+          =f.text_field :value, class: "form-control"
+      .form-group
+        .col-sm-offset-2.col-sm-10
+          =f.button nil, class: "btn btn-primary"

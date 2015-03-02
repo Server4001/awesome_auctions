@@ -1,0 +1,19 @@
+-unless @auction.nil?
+  .row
+    .col-lg-8.col-md-8.col-sm-12
+      .panel.panel-info
+        .panel-heading.text-center
+          %h3.panel-title Auction Information
+        .panel-body
+          %strong
+            Current Bid:
+            =number_to_currency(@top_bid)
+  .row
+    =form_for [@product, @auction, Bid.new ], html: {class: "form-inline new_bid"} do |f|
+      .form-group
+        = f.label :value, nil, class: "sr-only"
+        .input-group
+          .input-group-addon
+            $
+          = f.text_field :value, class: "form-control", placeholder: "Amount"
+      = f.submit 'Place Bid', class: "btn btn-primary"
