@@ -158,7 +158,7 @@ Please check the Vagrant documentation on [NFS synced folders](http://docs.vagra
 
 Released under the MIT License, Copyright (c) 2012–<i>ω</i> Xavier Noria.
 
-Setting up awesome auctions:
+## Setting up awesome auctions
 
     vagrant up
     vagrant ssh

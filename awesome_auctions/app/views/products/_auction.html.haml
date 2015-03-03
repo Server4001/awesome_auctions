@@ -9,5 +9,9 @@
           %span.input-group-addon $
           =f.text_field :value, class: "form-control"
       .form-group
+        =f.label :ends_at, nil, class: "col-sm-2 control-label"
+        .col-sm-6.input-group
+          =f.datetime_select :ends_at, default: 7.days.from_now, ampm: true
+      .form-group
         .col-sm-offset-2.col-sm-10
           =f.button nil, class: "btn btn-primary"

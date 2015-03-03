@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150301223533) do
+ActiveRecord::Schema.define(version: 20150303021013) do
 
   create_table "auctions", force: :cascade do |t|
     t.float    "value",      limit: 24
     t.integer  "product_id", limit: 4
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.datetime "ends_at"
   end
 
   add_index "auctions", ["product_id"], name: "index_auctions_on_product_id", using: :btree

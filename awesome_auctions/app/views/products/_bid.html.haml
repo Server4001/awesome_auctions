@@ -4,12 +4,23 @@
       .panel.panel-info
         .panel-heading.text-center
           %h3.panel-title Auction Information
-        .panel-body
-          %strong
-            Current Bid:
-            =number_to_currency(@top_bid)
+        .panel-body.auction-info
+          %p
+            %span Current Bid:
+            %span #{number_to_currency(@top_bid)}
+            -if @auction.top_bid_is_mine? current_user
+              %span.label.label-success Your Bid
+            -else
+              %span.label.label-danger Not Your Bid
+          %p
+            %span Ends At: #{@auction.ends_at.to_formatted_s(:long)}
+          %p
+            -unless (@auction.ends_at - Time.now) <= 0
+              %span #{distance_of_time_in_words_to_now(@auction.ends_at, include_seconds: true).titleize} Left!
+            -else
+              %span This Auction Has Ended!
   .row
-    =form_for [@product, @auction, Bid.new ], html: {class: "form-inline new_bid"} do |f|
+    =form_for [@product, @auction, Bid.new], html: {class: "form-inline new_bid"} do |f|
       .form-group
         = f.label :value, nil, class: "sr-only"
         .input-group
