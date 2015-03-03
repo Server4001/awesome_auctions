@@ -17,6 +17,7 @@ class PlaceBid
     if bid.save
       return true
     elsif bid.errors.any?
+      # TODO : Make this not terrible
       errors_list = ""
       bid.errors.full_messages.each do |message|
         errors_list += message + "   ";
