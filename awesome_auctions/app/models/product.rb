@@ -14,4 +14,8 @@ class Product < ActiveRecord::Base
   def has_auction?
     auction.present?
   end
+
+  def belongs_to_user? user
+    user_id === user.id
+  end
 end

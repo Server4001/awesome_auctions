@@ -17,6 +17,22 @@ class Auction < ActiveRecord::Base
   end
 
   def top_bid_is_mine? user
-    top_bid.user_id === user.id
+    if top_bid.nil? or top_bid.user_id != user.id
+      return false
+    else
+      return true
+    end
+  end
+
+  def ended?
+    if ends_at < Time.now
+      true
+    else
+      false
+    end
+  end
+
+  def i_bid_on_this? user
+    bids.where(user_id: user.id).count > 0
   end
 end

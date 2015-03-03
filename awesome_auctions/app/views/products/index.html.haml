@@ -8,9 +8,10 @@
         %p
           =link_to product do
             =image_tag product.image, height: 200
-        .btn-group{role: "group"}
-          = link_to 'Edit', edit_product_path(product), class: "btn btn-primary btn-sm"
-          = link_to 'Destroy', product, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "btn btn-primary btn-sm"
+        -if product.belongs_to_user? current_user
+          .btn-group{role: "group"}
+            = link_to 'Edit', edit_product_path(product), class: "btn btn-primary btn-sm"
+            = link_to 'Destroy', product, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "btn btn-primary btn-sm"
 
 .row{style: "margin-top: 25px;"}
   %p

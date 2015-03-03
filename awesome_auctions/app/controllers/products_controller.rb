@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_filter :confirm_ownership, only: [:edit, :update, :destroy]
 
   # GET /products
   # GET /products.json
@@ -73,4 +74,10 @@ class ProductsController < ApplicationController
     def product_params
       params.require(:product).permit(:name, :image)
     end
+
+  def confirm_ownership
+    unless @product.belongs_to_user? current_user
+      redirect_to products_url, alert: 'Only the owner of the auction can update or delete it.'
+    end
+  end
 end
