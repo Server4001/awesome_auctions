@@ -157,3 +157,36 @@ Please check the Vagrant documentation on [NFS synced folders](http://docs.vagra
 ## License
 
 Released under the MIT License, Copyright (c) 2012–<i>ω</i> Xavier Noria.
+
+Setting up awesome auctions:
+
+    vagrant up
+    vagrant ssh
+    sudo gem install rails 4.2.0
+    cd /vagrant/awesome_auctions
+    bundle
+
+Create `/vagrant/awesome_auctions/config/secrets.yml` and add the following:
+
+    development:
+        secret_key_base:
+
+    test:
+        secret_key_base:
+
+    production:
+        secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
+
+Run:
+
+    rake secret
+    rake db:create
+    rake db:migrate
+
+Install Devise
+
+Start the rails server with:
+
+    bin/rails server -b 0.0.0.0
+
+Navigate to `http://192.168.35.27:3000`
