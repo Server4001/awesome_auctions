@@ -180,7 +180,7 @@ Create `/vagrant/awesome_auctions/config/secrets.yml` and add the following:
 Run:
 
     rake secret
-    rake db:create
+    rake db:create:all
     rake db:migrate
 
 Install Devise
