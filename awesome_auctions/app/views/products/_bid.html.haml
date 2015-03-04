@@ -29,3 +29,11 @@
               $
             = f.text_field :value, class: "form-control", placeholder: "Amount"
         = f.submit 'Place Bid', class: "btn btn-primary"
+
+  :javascript
+    $(function() {
+      var userId = parseInt("#{current_user.id}");
+      var auctionId = parseInt("#{@auction.id}");
+      var form = $('#new_bid');
+      var auctionSocket = new AuctionSocket(userId, auctionId, form);
+    });

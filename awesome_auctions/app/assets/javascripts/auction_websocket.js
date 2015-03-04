@@ -3,7 +3,7 @@ var AuctionSocket = function(user_id, auction_id, form) {
     this.auction_id = auction_id;
     this.form = $(form);
 
-    this.socket = new WebSocket(App.websocket_url + "auctions/" + this.auction_id);
+    this.socket = new WebSocket(App.websocket_url + "/auctions/" + this.auction_id);
 
     this.initBinds();
 };
