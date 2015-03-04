@@ -14,7 +14,12 @@
               %span #{distance_of_time_in_words_to_now(@auction.ends_at, include_seconds: true).titleize} Left!
             -else
               %span This Auction Has Ended!
-  -unless @auction.ended?
+  -if @auction.ended? and !@product.transferred and !@auction.top_bid.nil?
+    -if @product.belongs_to_user?(current_user)
+      =link_to "Give this product to the winner", transfer_product_path(@product), class: "btn btn-sm btn-primary", method: :put
+    -elsif @auction.top_bid_is_mine?(current_user)
+      =link_to "Claim this product", transfer_product_path(@product), class: "btn btn-sm btn-primary", method: :put
+  -elsif @auction.has_not_ended?
     .row
       =form_for [@product, @auction, Bid.new], html: {class: "form-inline new_bid"} do |f|
         .form-group

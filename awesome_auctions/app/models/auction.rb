@@ -32,6 +32,10 @@ class Auction < ActiveRecord::Base
     end
   end
 
+  def has_not_ended?
+    !ended?
+  end
+
   def i_bid_on_this? user
     bids.where(user_id: user.id).count > 0
   end

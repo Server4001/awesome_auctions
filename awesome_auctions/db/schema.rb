@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150303021013) do
+ActiveRecord::Schema.define(version: 20150304025359) do
 
   create_table "auctions", force: :cascade do |t|
     t.float    "value",      limit: 24
@@ -35,11 +35,12 @@ ActiveRecord::Schema.define(version: 20150303021013) do
   add_index "bids", ["user_id"], name: "index_bids_on_user_id", using: :btree
 
   create_table "products", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "image",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.integer  "user_id",    limit: 4
+    t.string   "name",        limit: 255
+    t.string   "image",       limit: 255
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.integer  "user_id",     limit: 4
+    t.boolean  "transferred", limit: 1,   default: false
   end
 
   add_index "products", ["user_id"], name: "index_products_on_user_id", using: :btree

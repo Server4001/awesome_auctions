@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :transfer]
   before_filter :confirm_ownership, only: [:edit, :update, :destroy]
 
   # GET /products
@@ -64,6 +64,16 @@ class ProductsController < ApplicationController
     end
   end
 
+  # PUT /products/1/transfer
+  def transfer
+    if @product.auction.ended? and (@product.user_id === current_user.id or @product.auction.top_bid_is_mine? current_user) and !@product.transferred
+      @product.update user_id: @product.auction.top_bid.user_id, transferred: true
+      redirect_to @product, notice: "Successfully transfered the product."
+    else
+      redirect_to @product, alert: "This product cannot be transferred."
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
@@ -77,7 +87,7 @@ class ProductsController < ApplicationController
 
   def confirm_ownership
     unless @product.belongs_to_user? current_user
-      redirect_to products_url, alert: 'Only the owner of the auction can update or delete it.'
+      redirect_to products_url, alert: 'Only the owner of an auction can update or delete it.'
     end
   end
 end

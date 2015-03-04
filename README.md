@@ -166,24 +166,14 @@ Released under the MIT License, Copyright (c) 2012–<i>ω</i> Xavier Noria.
     cd /vagrant/awesome_auctions
     bundle
 
-Create `/vagrant/awesome_auctions/config/secrets.yml` and add the following:
+Run `rake secret` and copy the results with the following line into `~/.profile`
 
-    development:
-        secret_key_base:
-
-    test:
-        secret_key_base:
-
-    production:
-        secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
+    export SECRET_KEY_BASE="PUT_THE_RESULTS_OF_RAKE_SECRET_HERE"
 
 Run:
 
-    rake secret
     rake db:create:all
     rake db:migrate
-
-Install Devise
 
 Start the rails server with:
 
