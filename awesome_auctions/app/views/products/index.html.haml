@@ -4,6 +4,8 @@
   %ul.list-unstyled
     - counter = 0
     - @products.each do |product|
+      -if product.auction.nil? and !product.belongs_to_user? current_user
+        -next
       - counter += 1
       %li.col-md-3
         %h2= link_to product.name, product

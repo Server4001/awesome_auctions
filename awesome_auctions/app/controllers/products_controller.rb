@@ -5,7 +5,8 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    @products = Product.all
+    # Eager load auctions with the products for use in the view
+    @products = Product.includes(:auction).all
   end
 
   # GET /products/1
