@@ -1,5 +1,5 @@
 %span Current Bid:
-%span #{number_to_currency(@top_bid)}
+%span#current-bid-price #{number_to_currency(@top_bid)}
 
 -if @auction.i_bid_on_this? current_user
   -if @auction.ended? and @auction.top_bid_is_mine? current_user

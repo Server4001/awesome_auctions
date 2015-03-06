@@ -1,0 +1,3 @@
+class BidTooSmall < ArgumentError
+
+end

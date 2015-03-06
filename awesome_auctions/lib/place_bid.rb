@@ -1,8 +1,12 @@
-class PlaceBid
-  # Access number_to_currency()
-  include ActionView::Helpers::NumberHelper
+require File.expand_path "../exceptions/bid_too_small", __FILE__
+require File.expand_path "../exceptions/non_numeric", __FILE__
 
+class PlaceBid
   def initialize options
+    if (Float(options[:value]) rescue false) === false
+      raise NonNumeric, "Bid price must be a number"
+    end
+
     @value = options[:value].to_f
     @user = options[:user]
     @auction = options[:auction]
@@ -10,12 +14,12 @@ class PlaceBid
 
   def execute
     current_bid_value = @auction.current_bid_value
-    raise Exception, "Bid price must be greater than #{number_to_currency(current_bid_value)}" if @value <= current_bid_value
+    raise BidTooSmall, "Bid price must be greater than #{current_bid_value}" if @value <= current_bid_value
 
     bid = @auction.bids.build value: @value, user_id: @user.id
 
     if bid.save
-      return true
+      true
     elsif bid.errors.any?
       # TODO : Make this not terrible
       errors_list = ""
@@ -23,9 +27,9 @@ class PlaceBid
         errors_list += message + "   ";
       end
 
-      raise Exception, "The following #{pluralize(bid.errors.count, "error")} occurred: #{errors_list}"
+      raise Exception, "The following error(s) occurred: #{errors_list}"
     else
-      return false
+      false
     end
   end
 end

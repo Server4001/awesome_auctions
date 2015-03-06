@@ -20,17 +20,18 @@ AuctionSocket.prototype.initBinds = function() {
 
     // Register a callback function for when the socket returns a message
     this.socket.onmessage = function(e) {
-        var tokens = e.data.split(" ");
+        var data = $.parseJSON(e.data);
+        var type = data.type;
 
-        switch(tokens[0]) {
+        switch(type) {
             case "bidok":
-                _this.bid(tokens[1]);
+                _this.bid(data.value);
                 break;
             case "underbid":
-                _this.underbid(tokens[1]);
+                _this.underbid(data.value);
                 break;
             case "outbid":
-                _this.outbid(tokens[1]);
+                _this.outbid(data.value);
                 break;
             case "won":
                 _this.won();
@@ -38,11 +39,9 @@ AuctionSocket.prototype.initBinds = function() {
             case "lost":
                 _this.lost();
                 break;
+            default:
+                _this.addMessage("danger", "Uh oh!", data.message);
         }
-
-        // TODO : Remove these
-        console.log(e);
-        console.log(tokens);
     };
 };
 
@@ -57,29 +56,34 @@ AuctionSocket.prototype.sendBid = function(value) {
 };
 
 AuctionSocket.prototype.bid = function() {
-    this.form.find(".message strong").html(
-        "Your bid: " + this.value
-    );
+    $('#current-bid-price').html("$" + parseFloat(this.value).toFixed(2));
+    this.addMessage("success", "Success!", "Your bid has been placed. The new price is: $" + parseFloat(this.value).toFixed(2));
 };
 
 AuctionSocket.prototype.underbid = function(value) {
-    this.form.find(".message strong").html(
-        "Your bid is under " + value + "."
-    );
+    if (value === null) {
+        this.addMessage("danger", "Uh Oh!", "You must enter a bid.");
+    }
+    else {
+        this.addMessage("danger", "Uh Oh!", "Your bid of $" + value + " is too low.");
+    }
 };
 
 AuctionSocket.prototype.outbid = function(value) {
-    this.form.find(".message strong").html(
-        "You were outbid. It is now " + value + "."
-    );
+    this.addMessage("warning", "FYI:", "You were outbid. The new top bid is: " + value);
 };
 
 AuctionSocket.prototype.won = function() {
-    this.form.find(".message strong").html(
-        "You won! " + this.value
-    );
+    this.addMessage("success", "Hooray!", "You won the auction!");
 };
 
 AuctionSocket.prototype.lost = function() {
-    this.form.find(".message strong").html("You lost the auction.");
+    this.addMessage("danger", "Uh oh!", "You lost the auction!");
+};
+
+AuctionSocket.prototype.addMessage = function(classString, headerString, messageString) {
+    this.form.find("#socket-messages div.alert").remove();
+    this.form.find("#socket-messages").prepend(
+        '<div class="alert alert-' + classString + ' alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + headerString + '</strong> ' + messageString + '</div>'
+    );
 };

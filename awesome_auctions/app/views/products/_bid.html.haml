@@ -22,6 +22,7 @@
   -elsif @auction.has_not_ended?
     .row
       =form_for [@product, @auction, Bid.new], html: {class: "form-inline new_bid"} do |f|
+        #socket-messages
         .form-group
           = f.label :value, nil, class: "sr-only"
           .input-group
@@ -30,10 +31,10 @@
             = f.text_field :value, class: "form-control", placeholder: "Amount"
         = f.submit 'Place Bid', class: "btn btn-primary"
 
-  :javascript
-    $(function() {
-      var userId = parseInt("#{current_user.id}");
-      var auctionId = parseInt("#{@auction.id}");
-      var form = $('#new_bid');
-      var auctionSocket = new AuctionSocket(userId, auctionId, form);
-    });
+    :javascript
+      $(function() {
+        var userId = parseInt("#{current_user.id}");
+        var auctionId = parseInt("#{@auction.id}");
+        var form = $('#new_bid');
+        var auctionSocket = new AuctionSocket(userId, auctionId, form);
+      });

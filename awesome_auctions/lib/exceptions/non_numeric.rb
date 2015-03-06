@@ -1,0 +1,3 @@
+class NonNumeric < ArgumentError
+
+end
