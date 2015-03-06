@@ -174,6 +174,10 @@ Run:
 
     rake db:create:all
     rake db:migrate
+    rails generate delayed_job:active_record
+    rake db:migrate
+
+Run `whenever` to spit out cron additions, then add to crontab via `crontab -e`
 
 Start the rails server with:
 

@@ -26,5 +26,8 @@ module AwesomeAuctions
 
     # Add in the auction socket middleware
     config.middleware.use AuctionSocket
+
+    # Use delayed_job_activerecord for queues
+    config.active_job.queue_adapter = :delayed_job
   end
 end

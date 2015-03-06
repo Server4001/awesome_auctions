@@ -5,7 +5,7 @@ class Auction < ActiveRecord::Base
 
   # Model validations
   validates :value, presence: true, numericality: {greater_than: 0}
-  validates :ends_at, presence: true, date: {after: Proc.new {Time.now}, before_or_equal_to: Proc.new {30.days.from_now}, message: "must be sometime in the next 30 days"}
+  validates :ends_at, presence: true, date: {after: Proc.new {Time.now}, before_or_equal_to: Proc.new {30.days.from_now}, message: "must be sometime in the next 30 days"}, on: :create
 
   # Custom methods
   def top_bid
@@ -38,5 +38,24 @@ class Auction < ActiveRecord::Base
 
   def i_bid_on_this? user
     bids.where(user_id: user.id).count > 0
+  end
+
+  def self.process_ended
+    auctions = self.where("processed = ? AND ends_at <= ?", false, Time.now)
+    auctions.each do |auction|
+      product = auction.product
+
+      # Transfer product to winner
+      unless auction.top_bid.nil? or product.transferred
+        product.user_id = auction.top_bid.user.id
+        product.transferred = true
+        product.save
+      end
+
+      # Set processed to true
+      auction.update(processed: true)
+
+      # TODO : Send push notifications
+    end
   end
 end
