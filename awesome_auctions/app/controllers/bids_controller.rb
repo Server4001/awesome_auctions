@@ -3,6 +3,7 @@ require "place_bid"
 class BidsController < ApplicationController
   def create
     begin
+      # TODO : Update these
       service = PlaceBid.new bid_params
       if service.execute
         redirect_to product_path(params[:product_id]), notice: "Bid successfully placed."

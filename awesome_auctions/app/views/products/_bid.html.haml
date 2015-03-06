@@ -11,9 +11,9 @@
             %span Ends At: #{@auction.ends_at.to_formatted_s(:long)}
           %p
             -unless (@auction.ends_at - Time.now) <= 0
-              %span #{distance_of_time_in_words_to_now(@auction.ends_at, include_seconds: true).titleize} Left!
+              %span#js-auction-time-left #{distance_of_time_in_words_to_now(@auction.ends_at, include_seconds: true).titleize} Left!
             -else
-              %span This Auction Has Ended!
+              %span#js-auction-time-left This Auction Has Ended!
   -if @auction.ended? and !@product.transferred and !@auction.top_bid.nil?
     -if @product.belongs_to_user?(current_user)
       =link_to "Give this product to the winner", transfer_product_path(@product), class: "btn btn-sm btn-primary", method: :put
@@ -21,8 +21,8 @@
       =link_to "Claim this product", transfer_product_path(@product), class: "btn btn-sm btn-primary", method: :put
   -elsif @auction.has_not_ended?
     .row
+      #socket-messages
       =form_for [@product, @auction, Bid.new], html: {class: "form-inline new_bid"} do |f|
-        #socket-messages
         .form-group
           = f.label :value, nil, class: "sr-only"
           .input-group

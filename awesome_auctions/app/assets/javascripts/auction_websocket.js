@@ -34,7 +34,8 @@ AuctionSocket.prototype.initBinds = function() {
                 _this.outbid(data.value);
                 break;
             case "won":
-                _this.won();
+                console.log(data);
+                _this.won(data.product_id);
                 break;
             case "lost":
                 _this.lost();
@@ -56,34 +57,58 @@ AuctionSocket.prototype.sendBid = function(value) {
 };
 
 AuctionSocket.prototype.bid = function() {
-    $('#current-bid-price').html("$" + parseFloat(this.value).toFixed(2));
+    this.updateBidPriceAndStatus(this.value, 'label-danger', 'label-success', 'Your Bid');
     this.addMessage("success", "Success!", "Your bid has been placed. The new price is: $" + parseFloat(this.value).toFixed(2));
 };
 
 AuctionSocket.prototype.underbid = function(value) {
-    if (value === null) {
-        this.addMessage("danger", "Uh Oh!", "You must enter a bid.");
-    }
-    else {
-        this.addMessage("danger", "Uh Oh!", "Your bid of $" + value + " is too low.");
-    }
+    this.addMessage("danger", "Uh Oh!", "Your bid of $" + parseFloat(value).toFixed(2) + " is too low.");
 };
 
 AuctionSocket.prototype.outbid = function(value) {
-    this.addMessage("warning", "FYI:", "You were outbid. The new top bid is: " + value);
+    this.updateBidPriceAndStatus(value, 'label-success', 'label-danger', 'Not Your Bid');
+    this.addMessage("warning", "FYI:", "You were outbid. The new top bid is: $" + parseFloat(value).toFixed(2));
 };
 
-AuctionSocket.prototype.won = function() {
-    this.addMessage("success", "Hooray!", "You won the auction!");
+AuctionSocket.prototype.won = function(productId) {
+    this.updateBidStatus("label-danger", "label-success", "You Won");
+    this.removeBidInput();
+    this.changeTimeLeftToEnded();
+    this.form.after('<a class="btn btn-sm btn-primary" rel="nofollow" data-method="put" href="/products/' + productId + '/transfer">Claim this product</a>');
+    this.addMessage("success", "Hooray!", "You have won this auction.");
 };
 
 AuctionSocket.prototype.lost = function() {
-    this.addMessage("danger", "Uh oh!", "You lost the auction!");
+    this.updateBidStatus("label-success", "label-danger", "You Lost");
+    this.removeBidInput();
+    this.changeTimeLeftToEnded();
+    this.addMessage("danger", "Uh oh!", "This auction has ended, and someone else has won.");
 };
 
 AuctionSocket.prototype.addMessage = function(classString, headerString, messageString) {
-    this.form.find("#socket-messages div.alert").remove();
-    this.form.find("#socket-messages").prepend(
+    $("#socket-messages div.alert").remove();
+    $("#socket-messages").prepend(
         '<div class="alert alert-' + classString + ' alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + headerString + '</strong> ' + messageString + '</div>'
     );
+};
+
+AuctionSocket.prototype.updateBidPriceAndStatus = function(value, removeClass, addClass, html) {
+    $('#current-bid-price').html("$" + parseFloat(value).toFixed(2));
+    this.updateBidStatus(removeClass, addClass, html);
+};
+
+AuctionSocket.prototype.updateBidStatus = function(removeClass, addClass, html) {
+    if (!$('#bid-status').length) {
+        $('#current-bid-price').after('<span id="bid-status" class="label"></span>');
+    }
+
+    $('#bid-status').removeClass(removeClass).addClass(addClass).html(html);
+};
+
+AuctionSocket.prototype.removeBidInput = function() {
+    this.form.slideUp();
+};
+
+AuctionSocket.prototype.changeTimeLeftToEnded = function() {
+    $("#js-auction-time-left").html("This Auction Has Ended!");
 };

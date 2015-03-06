@@ -3,10 +3,10 @@
 
 -if @auction.i_bid_on_this? current_user
   -if @auction.ended? and @auction.top_bid_is_mine? current_user
-    %span.label.label-success You Won
+    %span#bid-status.label.label-success You Won
   -elsif @auction.ended?
-    %span.label.label-danger You Lost
+    %span#bid-status.label.label-danger You Lost
   -elsif @auction.top_bid_is_mine? current_user
-    %span.label.label-success Your Bid
+    %span#bid-status.label.label-success Your Bid
   -else
-    %span.label.label-danger Not Your Bid
+    %span#bid-status.label.label-danger Not Your Bid

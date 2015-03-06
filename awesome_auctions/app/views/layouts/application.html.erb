@@ -15,5 +15,10 @@
   <%= yield %>
 </div>
 
+<script type="text/javascript">
+    App = {
+        websocket_url: "ws://<%= request.host %>:<%= request.port %>"
+    };
+</script>
 </body>
 </html>

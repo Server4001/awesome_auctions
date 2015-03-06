@@ -3,8 +3,11 @@ require File.expand_path "../place_bid", __FILE__
 
 class AuctionSocket
   def initialize app
-    # Create an environment variable for app
     @app = app
+
+    # Create array that will hold the list of ALL the socket connections
+    # This works, because the middleware class is instantiated only once, when the server boots up
+    @clients = []
   end
 
   def call env
@@ -15,6 +18,9 @@ class AuctionSocket
     if Faye::WebSocket.websocket? env
       # Create a new socket connection and add callbacks
       socket = spawn_socket
+
+      # Add the new socket connection to the list
+      @clients << socket
 
       # Return async Rack response, so that the stack can continue
       socket.rack_response
@@ -73,18 +79,33 @@ class AuctionSocket
       # Build a response based on the bid results
       if bid === true
         response = {type: "bidok", value: tokens[2]}
+
+        # Notify other socket connections that the bid has increased
+        notify_outbids socket, tokens[2]
       else
         response = {type: "error", message: "An error occurred and your bid could not be placed"}
       end
-    rescue NonNumeric => e
-      response = {type: "error", message: e.message}
     rescue BidTooSmall => e
       response = {type: "underbid", value: tokens[2]}
+    rescue AuctionEnded => e
+      if service.status === :won
+        response = {type: "won", product_id: e.message}
+      else
+        response = {type: "lost", value: tokens[2]}
+      end
+    rescue NonNumeric => e
+      response = {type: "error", message: e.message}
     rescue Exception => e
       response = {type: "error", message: e.message}
     end
 
     # Sends a response via the socket connection
     socket.send response.to_json
+  end
+
+  def notify_outbids socket, value
+    @clients.reject { |client| client == socket }.each do |client|
+      client.send({type: "outbid", value: value}.to_json)
+    end
   end
 end
