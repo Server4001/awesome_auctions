@@ -162,7 +162,7 @@ Released under the MIT License, Copyright (c) 2012–<i>ω</i> Xavier Noria.
 
     vagrant up
     vagrant ssh
-    sudo gem install rails 4.2.0
+    sudo gem install rails -v 4.2.0
     cd /vagrant/awesome_auctions
     bundle
 
